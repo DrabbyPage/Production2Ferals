@@ -21,20 +21,20 @@ Along with this I made a struct in NodeScript called Connection that kept
 track of all the data of conneciton between nodes
 
 
-public struct Connection
-{
-
-    public GameObject fromNode;
-    public GameObject toNode;
-    public float weight;
-
-    public Connection(GameObject fN, GameObject tN, float num)
+    public struct Connection
     {
-        fromNode = fN;
-        toNode = tN;
-        weight = num;
+
+        public GameObject fromNode;
+        public GameObject toNode;
+        public float weight;
+
+        public Connection(GameObject fN, GameObject tN, float num)
+        {
+            fromNode = fN;
+            toNode = tN;
+            weight = num;
+        }
     }
-}
 
     GameObject gridHolder;
 
