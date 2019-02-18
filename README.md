@@ -435,14 +435,13 @@ track of all the data of conneciton between nodes
         // if all collisions were tagged with node then return true
         return true;
     }
-   
-    ----------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------
     
-    *** 2D Raycast Lighting Script***
-    Uses Unity Sprite Masks and Raycasting to produce an area for other
-    either be seen or not seen
-    this is to make multiple raycasting easy without needing to use
-    a 2d array for raycasts
+*** 2D Raycast Lighting Script***
+Uses Unity Sprite Masks and Raycasting to produce an area for other
+either be seen or not seen
+this is to make multiple raycasting easy without needing to use
+a 2d array for raycasts
     
     struct RaycastHolder
     {
