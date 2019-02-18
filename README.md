@@ -49,12 +49,12 @@ track of all the data of conneciton between nodes
     class Heuristic
     {
         public Heuristic(GameObject endNode)
-        \{
+        {
             heurEndNode = endNode;
-        \}
+        }
 
         public float EstimateCost(GameObject node)
-        \{
+        {
             Vector3 nodePos = node.transform.position;
             Vector3 endNodePos = heurEndNode.transform.position;
 
@@ -62,7 +62,7 @@ track of all the data of conneciton between nodes
             float distance = diff.magnitude;
 
             return distance;
-        \}
+        }
 
         private GameObject heurEndNode;
     }
