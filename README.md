@@ -23,6 +23,7 @@ track of all the data of conneciton between nodes
 
 public struct Connection
 {
+
     public GameObject fromNode;
     public GameObject toNode;
     public float weight;
@@ -48,12 +49,12 @@ public struct Connection
     class Heuristic
     {
         public Heuristic(GameObject endNode)
-        {
+        \{
             heurEndNode = endNode;
-        }
+        \}
 
         public float EstimateCost(GameObject node)
-        {
+        \{
             Vector3 nodePos = node.transform.position;
             Vector3 endNodePos = heurEndNode.transform.position;
 
@@ -61,11 +62,11 @@ public struct Connection
             float distance = diff.magnitude;
 
             return distance;
-        }
+        \}
 
         private GameObject heurEndNode;
     }
-   [SerializeField]
+
     public List<GameObject> objectPath;
 
     //[SerializeField]
@@ -76,12 +77,6 @@ public struct Connection
     {
         gridHolder = GameObject.Find("Grid");
         objectPath = new List<GameObject>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void GeneratePath(Vector3 start, Vector3 end)
@@ -164,15 +159,15 @@ public struct Connection
             // otherwise get its outgoing connections
             else
             {
-                // connections= graph.getConnections(current)
+                // get the connections of the current node
                 List<Connection> connections = new List<Connection>();
-                connections = current.node.GetComponent<NodeScript>().GetConnections();// mpGraph->getConnections(current.node->getId());
+                connections = current.node.GetComponent<NodeScript>().GetConnections();
 
                 // loop through each connection in turn
                 for (int i = 0; i < connections.Count; i++)
                 {
                     // get the cost estimate for the end node
-                    GameObject endToNode = connections[i].toNode;//connections[i]->getToNode();
+                    GameObject endToNode = connections[i].toNode;
                     float endNodeCost = current.costSoFar + connections[i].weight;// connections[i]->getCost();
 
                     StarNodeRecord endNodeRecord = new StarNodeRecord();
@@ -183,11 +178,9 @@ public struct Connection
                     bool inOpenList = false;
 
                     // if the node is closed we may have to skip or remove it from the close list
-                    //for (auto nodeRecord = closedList.begin(); nodeRecord != closedList.end(); nodeRecord++)
                     for(int j = 0; j < closedList.Count; j++)
                     {
                         // here we find the record in the closed list corresponding to the end node
-                        //if (nodeRecord.node == endNode)
                         if (closedList[j].node == endToNode)
                         {
                             inClosedList = true;
@@ -202,7 +195,6 @@ public struct Connection
                             // otherwise remove it from the closed list;
                             else
                             {
-                                //closedList.erase(nodeRecord);
                                 closedList.RemoveAt(j);
 
                                 // we can use the node's old cost values to calculate its heuristic without
@@ -215,10 +207,8 @@ public struct Connection
                     if (!inClosedList)
                     {
                         // skip if the node is open and we've not found a better route
-                        //for (auto record = openList.begin(); record != openList.end(); record++)
                         for (int m = 0; m < openList.Count; m++)
                         {
-                            //if (record->node == endNode)
                             if(openList[m].node == endToNode)
                             {
                                 inOpenList = true;
@@ -237,7 +227,6 @@ public struct Connection
 
                                     // we can use the node's old cost values to calculate its heuristic without
                                     // calling the possibly expensive heuristic function
-                                    // endNodeHeuristic = endNodeRecord.recordConnection->getCost() - endNodeRecord.costSoFar;
                                     endNodeHeuristic = endNodeRecord.recordConnection.weight - endNodeRecord.costSoFar;
                                 }
                                 break;
@@ -270,7 +259,6 @@ public struct Connection
                         //for (auto record = openList.begin(); record < openList.end(); record++)
                         for(int k = 0; k < openList.Count; k++)
                         {
-                            //if (record->node == endNodeRecord.node)
                             if(openList[k].node == endNodeRecord.node)
                             {
                                 inOpen = true;
@@ -280,17 +268,14 @@ public struct Connection
 
                         if (!inOpen)
                         {
-                            //openList.push_back(endNodeRecord);
                             openList.Add(endNodeRecord);
                         }
                     }
                 }
                 // we've finished looking at the connections for the current node so add it to the closed 
                 // list and remove it from the open list
-                //openList.erase(openList.begin());
                 openList.Remove(openList[0]);
 
-                //closedList.push_back(current);
                 closedList.Add(current);
             }
         }
@@ -300,7 +285,6 @@ public struct Connection
         {
             // we've run out of nodes without finding the goal, so theres no solution
             // return none
-            //std::cout << "did not end on goal node" << std::endl;
             Debug.Log("did not end on goal node");
             return null;
         }
@@ -308,24 +292,17 @@ public struct Connection
         else
         {
             // compile the list of connections in the path
-            // Path* a_Star_Path = new Path();
             List<GameObject> a_Star_Path = new List<GameObject>();
 
             // work back along the path, accumulating connections
-            //while (current.node != start)
             while (current.node != startNode)
             {
-                // path+= current.connection
-                // current = current.connection.getFromNode()
                 // FYI Update the current's connection as well
 
-                // a_Star_Path->addNode(current.node);
                 a_Star_Path.Add(current.node);
 
-                //current.node = current.recordConnection->getFromNode();
                 current.node = current.recordConnection.fromNode;
 
-                //for (auto node = closedList.begin(); node < closedList.end(); node++)
                 for(int i = 0; i < closedList.Count; i++)
                 {
                     //if (node->node == current.node)
@@ -338,7 +315,23 @@ public struct Connection
             }
 
             // reverse the path, and return it
-            
+            List<GameObject> reversePath = new List<GameObject>();
+
+            for(int i = 0; i < a_Star_Path.Count; i++)
+            {
+                GameObject newNode;
+                int lastNodeIndex;
+
+                lastNodeIndex = a_Star_Path.Count - (i+1);
+
+                newNode = a_Star_Path[lastNodeIndex];
+
+                //reversePath->addNode(newNode);
+                reversePath.Add(newNode);
+            }
+            // return reverse path
+            reversePath = SmoothPath(reversePath);
+            return reversePath;
         }
     }
     
